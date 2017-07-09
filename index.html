@@ -1,0 +1,305 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>reveal.js</title>
+
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/ionic.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+  <link rel="stylesheet" href="plugin/line-numbers/line-numbers.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1 style="font-family: 'Futura Bold';">Progressive Web Apps</h1>
+        <p><a href="https://twitter.com/mhartington" target="_blank">Mike Hartington | @mhartington</a></p>
+      </section>
+      <section>
+        <p>Been working in hybrid technologies</p>
+        <p>Cordova mostly, but always web</p>
+        <p>Early years, wild west</p>
+      </section>
+      <section>
+        <h3>Fast forward to today</h3>
+        <p>Better devices and browsers</p>
+        <p>JavaScript is much more mature</p>
+        <p>Web platform has evolved</p>
+      </section>
+      <section>
+        <h4>
+          We're in a web-renaissance
+        </h4>
+      </section>
+      <section>
+        <p>New ideas are built</p>
+        <p>"Best practices" are re-evaluated</p>
+        <p>New tech changes how things are done</p>
+      </section>
+      <section>
+        <h3>Progressive Web Apps</h3>
+      </section>
+      <section>
+        <h3>What is a PWA</h3>
+        <p>Think the EU</p>
+        <p>Technology of technologies</p>
+        <p>Boiled down to a few key points</p>
+      </section>
+      <section>
+        <h3>Secure</h3>
+        <p>HTTPS only</p>
+      </section>
+      <!-- App Manifest -->
+      <section>
+        <h3>App Manifest</h3>
+        <p>Icons, background colors, app name</p>
+      </section>
+      <section>
+        <p>Just JSON</p>
+        <p>Link from index</p>
+        <pre><code class="html" data-trim>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="manifest" href="manifest.json">
+        </code></pre>
+      </section>
+      <section>
+        <pre><code class="json" data-trim>
+          {
+            "name": "Star Track",
+            "short_name": "Star Track",
+            "start_url": "index.html",
+            "display": "standalone",
+            "orientation": "portrait-primary",
+            "icons": [{
+              "src": "./assets/imgs/logo.png",
+              "sizes": "192x192",
+              "type": "image/png"
+            }],
+            "background_color": "#32db64",
+            "theme_color": "#32db64"
+          }
+        </code></pre>
+      </section>
+      <section>
+        <video src="imgs/app-manifest.mp4" controls style="width:300px"></video>
+      </section>
+      <section>
+        <video src="imgs/app-save.mp4" controls style="width:300px"></video>
+      </section>
+      <!-- service worker -->
+      <section>
+        <h3>Service worker</h3>
+        <p>Proxy for the network</p>
+      </section>
+      <section>
+        <pre><code class="js" data-trim data-noescape>
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('service-worker.js')
+                .then(() =&gt; console.log('service worker installed'))
+                .catch(err =&gt; console.log('Error', err));
+            }
+          </code></pre>
+      </section>
+      <section>
+        <pre><code class="js" data-trim>
+        self.addEventListener('activate', (event) =&gt; {
+          event.waitUntil(
+            // ...
+          )
+        });
+        </code></pre>
+      </section>
+      <section>
+        <pre><code class="js" data-trim>
+          event.waitUntil(
+            // then create our named cached
+            caches
+            .open('my-sw-cache')
+            .then(function(cache) {
+              // once created, lets add some local resouces
+              return cache.addAll([
+                './build/main.js',
+                './build/main.css'
+              ]);
+            })
+            .then(function(){
+              console.log('Service worker is ready, and assets are cached');
+            });
+          );
+        </code></pre>
+
+      </section>
+      <section>
+        <p>External Resources</p>
+        <pre><code class="js" data-trim>
+           self.addEventListener("fetch", function(event) {
+            // If the request isn't GET, just ignore
+            if (event.request.method !== 'GET') {
+              return;
+            }
+            // here we block the request and handle it our selves
+            event.respondWith(
+              // Returns a promise of the cache entry that matches the request
+              caches
+              .match(event.request)
+              .then(function(response) {
+                if (response) {
+                  // our responce is in the cache, let's return that instead
+                  return response;
+                }
+                // if the responce is not in the cache, let's fetch it
+                return fetch(event.request)
+                  .then(function(response) {
+                    // we have a responce from the network
+                    return response;
+                  }).catch(function(error) {
+                    // Something happened
+                    console.error('Fetching failed:', error);
+                    throw error;
+                  });
+              })
+            );
+          });
+        </code></pre>
+        <small>
+          <a href="https://serviceworke.rs">serviceworke.rs</a>
+        </small>
+      </section>
+      <!-- twitter offline -->
+      <section>
+        <video style="width: 300px" controls src="imgs/twitter.mp4"></video>
+      </section>
+      <section>
+        <h3>This is great</h3>
+      </section>
+      <section>
+        <img src="imgs/offline-sad.png" width="300" alt="">
+      </section>
+      <section>
+        <p>Not tied to your apps content</p>
+        <p>Any request made can be saved</p>
+        <p>Images, content, external styles/js</p>
+      </section>
+      <!-- case studies -->
+      <section>
+        <h3>That's cool and all...but...</h3>
+      </section>
+      <section>
+        <img src="imgs/Twitter_bird_logo_2012.svg" width="100" alt="">
+        <p><a href="https://blog.twitter.com/2017/introducing-twitter-lite" target="_blank">
+                Twitter Lite PWA
+            </a></p>
+        <small>
+          <p>65% increase in pages per session</p>
+          <p>75% increase in Tweets sent</p>
+          <p>20% decrease in bounce rate</p>
+        </small>
+
+
+      </section>
+      <section>
+        <img src="imgs/housing_go.png" width="100" alt="">
+        <p>Housing.com</p>
+        <small >
+          <p>38% more conversions</p>
+          <p>40% lower bounce rate</p>
+          <p>10% longer average session</p>
+        </small>
+      </section>
+      <section>
+        <img src="imgs/aliexpress.png" width="100" alt="">
+        <p>AliExpress</p>
+        <small>
+          <p>104% for new users across all browsers</p>
+          <p>82% increase in iOS conversion rate</p>
+          <p>2X more pages visited per session per user across all browsers</p>
+          <p>74% increase in time spent per session across all browsers</p>
+        </small>
+      </section>
+      <section>
+          <small><a href="https://developers.google.com/web/showcase/2017/">https://developers.google.com/web/showcase/2017/</a></small>
+      </section>
+      <section>
+        <p>Not just cool new tech</p>
+        <p>But good business decisions</p>
+      </section>
+      <!-- Where Are We Going -->
+      <section>
+        <h3>So what does the future hold</h3>
+      </section>
+      <section>
+        <p>Browser vendors are working together</p>
+        <p>Google, Microsoft, Mozilla, Samsung, etc</p>
+        <small class="fragment"><p>...on the sidelines right now...</p></small>
+      </section>
+      <!-- Cool APIS -->
+      <section>
+        <h4>Web Payments</h4>
+        <video controls src="imgs/web-payments.mp4" style="width:300px"></video>
+      </section>
+      <section>
+        <h4>Web Credentials</h4>
+        <video controls src="imgs/web-creds.mp4" style="width:300px"></video>
+      </section>
+      <!-- Closing -->
+      <section>
+        <h4>Generally...</h4>
+        <h4>Just more APIs for the web</h4>
+      </section>
+      <section>
+        <p>Do you need to be native?</p>
+      </section>
+      <section>
+        <h3>Thank you!</h3>
+        <h4><a href="https://twitter.com/mhartington" target="_blank">@mhartington</a></h4>
+        <h3><code>&lt;/html&gt;</code></h3>
+      </section>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        history: true,
+        slideNumber: true,
+        // Transition style
+        transition: 'fade', // none/fade/slide/convex/concave/zoom
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [{
+          src: 'plugin/markdown/marked.js'
+        }, {
+          src: 'plugin/markdown/markdown.js'
+        }, {
+          src: 'plugin/notes/notes.js',
+          async: true
+        }, {
+          src: 'plugin/line-numbers/line-numbers.js'
+        }, {
+          src: 'plugin/highlight/highlight.js',
+          async: false,
+          callback: function() {
+            hljs.initHighlightingOnLoad();
+          }
+        }]
+      });
+    </script>
+</body>
+
+</html>
