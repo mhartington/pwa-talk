@@ -1,7 +1,13 @@
 html {
   background-color: #313744; }
 
-section.has-light-background, section.has-light-background h1, section.has-light-background h2, section.has-light-background h3, section.has-light-background h4, section.has-light-background h5, section.has-light-background h6 {
+section.has-light-background,
+section.has-light-background h1,
+section.has-light-background h2,
+section.has-light-background h3,
+section.has-light-background h4,
+section.has-light-background h5,
+section.has-light-background h6 {
   color: #222; }
 
 /*********************************************
@@ -12,7 +18,7 @@ body {
   background-color: #313744; }
 
 .reveal {
-  font-family: "Avenir Next", san-serif;
+  font-family: "Inter var", system-ui, sans-serif;
   font-size: 52px;
   font-weight: normal;
   color: #fff; }
@@ -43,7 +49,7 @@ body {
 .reveal h6 {
   margin: 0 0 20px 0;
   color: #fff;
-  font-family: "Avenir Next", san-serif;
+  font-family: "Inter var", system-ui, sans-serif;
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 1px;
@@ -289,12 +295,20 @@ body {
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
 
 .reveal {
-  font-weight: 500; }
-  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-weight: 300; }
+  .reveal h1,
+  .reveal h2,
+  .reveal h3,
+  .reveal h4 {
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 900;
     letter-spacing: 2px; }
-  .reveal p, .reveal th, .reveal td, .reveal ol, .reveal ul, .reveal li {
+  .reveal p,
+  .reveal th,
+  .reveal td,
+  .reveal ol,
+  .reveal ul,
+  .reveal li {
     text-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2); }
   .reveal section img {
     background: transparent;
@@ -309,58 +323,11 @@ body {
     font-style: italic;
     background: transparent;
     box-shadow: none; }
-  .reveal table td, .reveal table th {
-    border: 0;
-    background: rgba(0, 0, 0, 0.15); }
-  .reveal table th {
-    text-transform: uppercase;
-    background: rgba(0, 0, 0, 0.4); }
   .reveal a {
     color: inherit;
     text-decoration: underline; }
   .reveal .dark-shadow {
     text-shadow: 5px 0 10px black; }
-  .reveal .left {
-    text-align: left; }
-  .reveal .me {
-    margin: 30px 0 0 130px;
-    font-size: 1.2em;
-    line-height: 2em;
-    list-style-type: none; }
-    .reveal .me li {
-      padding: 0 0 0 70px; }
-  .reveal strong {
-    font-weight: 500; }
-  .reveal .native-logos img {
-    width: 100px;
-    margin: 40px 20px 0 20px; }
-  .reveal .stack {
-    width: 330px;
-    margin: 0 350px 0 0;
-    list-style-type: none; }
-    .reveal .stack li {
-      margin: 8px;
-      padding: 5px 6px 7px 12px; }
-  .reveal .ionic-blue,
-  .reveal .ionic-blue * {
-    text-shadow: none;
-    color: #313744; }
-  .reveal .col {
-    float: left;
-    width: 50%; }
-  .reveal .col.preview {
-    width: 35%; }
-  .reveal .col.code {
-    width: 65%;
-    text-align: left; }
-  .reveal .col.code > * {
-    margin-left: 40px; }
-  .reveal pre code {
-    background-color: #1B2B34; }
-  .reveal .headshot {
-    border-radius: 50%;
-    border: 5px solid #202532;
-    width: 200px; }
   .reveal a {
     color: white;
     text-decoration: none;
@@ -380,101 +347,11 @@ body {
     -webkit-transform: translateY(10px);
     -moz-transform: translateY(10px);
     transform: translateY(10px); }
-  .reveal a:not(.icon):hover::after, .reveal a:not(.icon):focus::after {
+  .reveal a:not(.icon):hover::after,
+  .reveal a:not(.icon):focus::after {
     opacity: 0.5;
     -webkit-transform: translateY(0px);
     -moz-transform: translateY(0px);
     transform: translateY(0px); }
-  .reveal .icon {
-    -webkit-transition: all 0.5s ease-out !important;
-    -moz-transition: all 0.5s ease-out !important;
-    -ms-transition: all 0.5s ease-out !important;
-    -o-transition: all 0.5s ease-out !important;
-    transition: all 0.5s ease-out !important;
-    opacity: 0.5; }
-  .reveal .icon:hover {
-    opacity: 1; }
-  .reveal .blur {
-    background-color: rgba(0, 0, 0, 0.3); }
-    .reveal .blur p {
-      text-shadow: -2px 2px 0 #000;
-      font-weight: bold; }
-  .reveal .demo {
-    width: 40%; }
-    .reveal .demo .demo-buttons {
-      position: absolute;
-      z-index: 124;
-      right: 0;
-      bottom: 0; }
-    .reveal .demo .button {
-      background-color: white;
-      border: none; }
-  .reveal .code-left {
-    width: 60%;
-    text-align: left; }
-  .reveal .flex {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex; }
-  .reveal [flex] {
-    display: flex; }
-  .reveal [col] {
-    flex: 1;
-    text-align: left;
-    padding-right: 40px; }
-  .reveal [center] {
-    display: flex;
-    align-items: center;
-    justify-content: center; }
-  .reveal [col][center] img {
-    max-height: 420px; }
-  .reveal pre[col],
-  .reveal pre code {
-    background-color: #22272f;
-    font-size: 20px;
-    line-height: 26px; }
-  .reveal pre[col] {
-    margin: 0;
-    padding: 30px; }
-  .reveal [col][demo] {
-    align-items: center;
-    display: flex;
-    flex-direction: column; }
-  .reveal iframe {
-    background-color: white; }
-  .reveal .demo-ios {
-    position: relative;
-    background: url("../../img/devices-sprite-transparent.png") no-repeat;
-    background-size: 455px 2320px;
-    width: 460px;
-    height: 740px; }
-    .reveal .demo-ios iframe {
-      position: absolute;
-      top: 75px;
-      left: 69px;
-      width: 320px;
-      height: 560px; }
-  .reveal .demo-md {
-    position: relative;
-    width: 460px;
-    height: 740px;
-    background: center center no-repeat url("../../img/devices-sprite-transparent.png");
-    background-size: 425px; }
-    .reveal .demo-md iframe {
-      position: absolute;
-      top: 64px;
-      left: 68px;
-      width: 323px;
-      height: 540px; }
-  .reveal .demo-wp {
-    position: relative;
-    width: 460px;
-    height: 740px;
-    background: center bottom no-repeat url("../../img/devices-sprite-transparent.png");
-    background-size: 430px; }
-    .reveal .demo-wp iframe {
-      position: absolute;
-      top: 79px;
-      left: 63px;
-      width: 331px;
-      height: 545px; }
+  .reveal .controls button {
+    color: #fff; }

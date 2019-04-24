@@ -5,14 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>reveal.js</title>
+  <title>Progressive Web Apps Intro</title>
 
   <link rel="stylesheet" href="css/reveal.css">
   <link rel="stylesheet" href="css/theme/ionic.css">
 
   <!-- Theme used for syntax highlighting of code -->
-  <link rel="stylesheet" href="lib/css/zenburn.css">
-  <link rel="stylesheet" href="plugin/line-numbers/line-numbers.css">
+  <link rel="stylesheet" href="css/atom-one-dark.css">
   <!-- Printing and PDF exports -->
   <script>
     var link = document.createElement('link');
@@ -27,13 +26,14 @@
   <div class="reveal">
     <div class="slides">
       <section>
-        <h1 style="font-family: 'Futura';">Progressive Web Apps</h1>
+        <h1>Progressive Web Apps</h1>
         <p><a href="https://twitter.com/mhartington" target="_blank">Mike Hartington | @mhartington</a></p>
       </section>
       <section>
         <h4>My background</h4>
         <p>Been working in hybrid technologies</p>
-        <p>Cordova mostly, but always web</p>
+        <p>Mobile mostly, but always web</p>
+        <p>Some involvement in web standards</p>
       </section>
       <section>
         <h3>The Web</h3>
@@ -60,7 +60,8 @@
       <section>
         <h3>What is a PWA</h3>
         <p>Collection of APIs</p>
-        <p>Base of "what" PWAs should be</p>
+        <p>W Characteristics of what PWAs should do</p>
+        <p>Way of thinking, vs actual "thing"</p>
       </section>
       <section>
         <h3>Secure</h3>
@@ -74,34 +75,45 @@
       <section>
         <p>Just JSON</p>
         <p>Link from index</p>
-        <pre><code class="html" data-trim>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link rel="manifest" href="manifest.json">
+        <pre><code class="hljs" data-trim data-line-numbers="6">
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+            &lt;head&gt;
+              &lt;meta charset="UTF-8"&gt;
+              &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+              &lt;link rel="manifest" href="manifest.json"&gt;
+              &lt;meta http-equiv="X-UA-Compatible" content="ie=edge"&gt;
+            &lt;/head&gt;
         </code></pre>
       </section>
       <section>
-        <pre><code class="json" data-trim>
-          {
-            "name": "Star Track",
-            "short_name": "Star Track",
-            "start_url": "index.html",
-            "display": "standalone",
-            "orientation": "portrait-primary",
-            "icons": [{
-              "src": "./assets/imgs/logo.png",
+        <pre><code class="json" data-trim data-line-numbers>
+        {
+          "name": "Star Track",
+          "short_name": "StarTrack",
+          "theme_color": "#ffffff",
+          "background_color": "#ffffff",
+          "description": "The best Apple Music Client out there",
+          "display": "standalone",
+          "orientation": "portrait",
+          "start_url": "/browse",
+          "icons": [
+            ....
+            {
+              "src": "assets/icons/icon-192x192.png",
               "sizes": "192x192",
               "type": "image/png"
-            }],
-            "background_color": "#32db64",
-            "theme_color": "#32db64"
-          }
+            },
+            ....
+          ]
+        }
         </code></pre>
       </section>
       <section>
-        <video src="imgs/app-manifest.mp4" controls style="width:300px"></video>
+        <video src="imgs/manifest.mp4" controls style="width:300px"></video>
       </section>
       <section>
-        <video src="imgs/app-save.mp4" controls style="width:300px"></video>
+        <video src="imgs/install.mp4" controls style="width:300px"></video>
       </section>
       <!-- service worker -->
       <section>
@@ -109,7 +121,7 @@
         <p>Proxy for the network</p>
       </section>
       <section>
-        <pre><code class="js" data-trim data-noescape>
+        <pre><code class="js" data-trim data-noescape data-line-numbers>
             if ('serviceWorker' in navigator) {
               navigator.serviceWorker.register('service-worker.js')
                 .then(() =&gt; console.log('service worker installed'))
@@ -118,7 +130,7 @@
           </code></pre>
       </section>
       <section>
-        <pre><code class="js" data-trim>
+        <pre><code class="js" data-trim data-line-numbers>
         self.addEventListener('activate', (event) =&gt; {
           event.waitUntil(
             // ...
@@ -127,56 +139,47 @@
         </code></pre>
       </section>
       <section>
-        <pre><code class="js" data-trim>
-          event.waitUntil(
-            // then create our named cached
-            caches
-            .open('my-sw-cache')
-            .then(function(cache) {
-              // once created, lets add some local resouces
-              return cache.addAll([
-                './build/main.js',
-                './build/main.css'
-              ]);
-            })
-            .then(function(){
-              console.log('Service worker is ready, and assets are cached');
-            });
-          );
+        <pre><code class="js" data-trim data-line-numbers>
+          self.addEventListener('activate', (event) =&gt; {
+            event.waitUntil(
+              caches
+              .open('my-sw-cache')
+              .then(function(cache) {
+                return cache.addAll([
+                  './build/main.js',
+                  './build/main.css'
+                ]);
+              })
+              .then(function(){
+                console.log('Service worker is ready, and assets are cached');
+              }));
+          });
         </code></pre>
 
       </section>
       <section>
         <p>External Resources</p>
-        <pre><code class="js" data-trim>
-           self.addEventListener("fetch", function(event) {
-            // If the request isn't GET, just ignore
-            if (event.request.method !== 'GET') {
-              return;
-            }
-            // here we block the request and handle it our selves
-            event.respondWith(
-              // Returns a promise of the cache entry that matches the request
-              caches
-              .match(event.request)
-              .then(function(response) {
-                if (response) {
-                  // our responce is in the cache, let's return that instead
+        <pre><code class="js" data-trim data-line-numbers>
+         self.addEventListener("fetch", function(event) {
+
+          if (event.request.method !== 'GET') return;
+          event.respondWith(
+            caches
+            .match(event.request)
+            .then(function(response) {
+              if (response) {
+                return response;
+              }
+              return fetch(event.request)
+                .then(function(response) {
                   return response;
-                }
-                // if the responce is not in the cache, let's fetch it
-                return fetch(event.request)
-                  .then(function(response) {
-                    // we have a responce from the network
-                    return response;
-                  }).catch(function(error) {
-                    // Something happened
-                    console.error('Fetching failed:', error);
-                    throw error;
-                  });
-              })
-            );
-          });
+                }).catch(function(error) {
+                  console.error('Fetching failed:', error);
+                  throw error;
+                });
+            })
+          );
+        });
         </code></pre>
         <small>
           <a href="https://serviceworke.rs">serviceworke.rs</a>
@@ -184,27 +187,50 @@
       </section>
       <!-- twitter offline -->
       <section>
-        <video style="width: 300px" controls src="imgs/twitter.mp4"></video>
-      </section>
-      <section>
-        <h3>This is great</h3>
+        <video style="width: 300px" controls src="imgs/twitter-2.mp4"></video>
       </section>
       <section>
         <img src="imgs/offline-sad.png" width="300" alt="">
+      </section>
+      <section>
+        <h3>This is great</h3>
       </section>
       <section>
         <p>Not tied to your apps content</p>
         <p>Any request made can be saved</p>
         <p>Images, content, external styles/js</p>
       </section>
+      <section>
+        <h4>However</h4>
+        <p>Service Workers are... <span class="fragment">Complicated</span> </p>
+        <div class="fragment">
+        <p>Anytime you can mess with the network</p>
+         <p>You're probably going to have a bad time</p>
+        </div>
+      </section>
+      <section>
+          <img src="https://developers.google.com/web/tools/workbox/images/Workbox-Logo-Grey.svg" alt="">
+      </section>
+      <section>
+        <h4>Our precaching example</h4>
+        <pre><code class="hljs" data-line-numbers data-trim>
+        importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js');
+
+        workbox.precaching.precacheAndRoute([
+          '/styles/example.ac29.css',
+          { url: '/index.html', revision: 'abcd1234' },
+        ]);
+        </code></pre>
+      </section>
       <!-- case studies -->
       <section>
-        <h3>That's cool and all...but...</h3>
+        <h3>That's cool and all</h3>
+        <p>But who cares?</p>
       </section>
       <section>
         <img src="imgs/Twitter_bird_logo_2012.svg" width="100" alt="">
         <p><a href="https://blog.twitter.com/2017/introducing-twitter-lite" target="_blank">
-                Twitter Lite PWA
+                Twitter PWA
             </a></p>
         <small>
           <p>65% increase in pages per session</p>
@@ -249,27 +275,27 @@
       <section>
         <h4>Web Payments</h4>
         <video controls src="imgs/web-payments.mp4" style="width:250px"></video>
-        <p>Edge 15+, Chrome 60+, Safari TP</p>
+        <p>Edge, Chrome, Firefox, Safari</p>
       </section>
       <section>
         <h4>Web Credentials</h4>
         <video controls src="imgs/web-creds.mp4" style="width:250px"></video>
-        <p>Chrome 51+, Opera 45</p>
+        <p>Edge, Firefox, Chrome</p>
       </section>
       <!-- Closing -->
       <section>
         <h4>Generally...</h4>
-        <h4>Just more features for the web</h4>
+        <p>Just more features for the web</p>
 
       </section>
       <section>
-        <p>Do you need to be native?</p>
+        <p>Do you need a native app?</p>
       </section>
       <section>
         <h3>Thank you!</h3>
         <h4><a href="https://twitter.com/mhartington" target="_blank">@mhartington</a></h4>
-        <h3><code>&lt;/html&gt;</code></h3>
-      </section>
+        <p><code>&lt;/html&gt;</code></p>
+      <ssection>
     </div>
 
     <script src="lib/js/head.min.js"></script>
